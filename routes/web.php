@@ -56,6 +56,42 @@ Route::group(['prefix' => 'product'], function (){
     Route::get          ('/destroy/{id}',                'ProductController@destroy'                        )->name('client_destroy');
 });
 
+// DRIVER
+Route::group(['prefix' => 'driver'], function (){
+    Route::get          ('/',                            'DriverController@index'                           )->name('client');
+    Route::post         ('/save',                        'DriverController@store'                           )->name('client_store');
+    Route::get          ('/edit/{id}',                   'DriverController@edit'                            )->name('client_edit');
+    Route::post         ('/update/{id}',                 'DriverController@update'                          )->name('client_update');
+    Route::get          ('/destroy/{id}',                'DriverController@destroy'                         )->name('client_destroy');
+});
+
+// CITY NAME
+Route::group(['prefix' => 'city'], function (){
+    Route::get          ('/',                            'CityController@index'                           )->name('client');
+    Route::post         ('/save',                        'CityController@store'                           )->name('client_store');
+    Route::get          ('/edit/{id}',                   'CityController@edit'                            )->name('client_edit');
+    Route::post         ('/update/{id}',                 'CityController@update'                          )->name('client_update');
+    Route::get          ('/destroy/{id}',                'CityController@destroy'                         )->name('client_destroy');
+});
+
+// RULES AND RESTRICTION
+Route::group(['prefix' => 'rule'], function (){
+    Route::get          ('/',                            'RuleController@index'                           )->name('client');
+    Route::post         ('/save',                        'RuleController@store'                           )->name('client_store');
+    Route::get          ('/edit/{id}',                   'RuleController@edit'                            )->name('client_edit');
+    Route::post         ('/update/{id}',                 'RuleController@update'                          )->name('client_update');
+    Route::get          ('/destroy/{id}',                'RuleController@destroy'                         )->name('client_destroy');
+});
+
+// TERMS AND CONDITION
+Route::group(['prefix' => 'term'], function (){
+    Route::get          ('/',                            'TermController@index'                           )->name('client');
+    Route::post         ('/save',                        'TermController@store'                           )->name('client_store');
+    Route::get          ('/edit/{id}',                   'TermController@edit'                            )->name('client_edit');
+    Route::post         ('/update/{id}',                 'TermController@update'                          )->name('client_update');
+    Route::get          ('/destroy/{id}',                'TermController@destroy'                         )->name('client_destroy');
+});
+
 Route::get('store', function () {
     return view('frontend.pages.store.place_order');
 });

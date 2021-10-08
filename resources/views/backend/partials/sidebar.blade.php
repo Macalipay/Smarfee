@@ -50,7 +50,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+                <a class="sidebar-link" href="{{ url('driver')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-motorcycle" style="color: #153d77"></i> <span class="align-middle">Drivers</span>
                 </a>
             </li>
@@ -66,19 +66,19 @@
             </li>
            
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+                <a class="sidebar-link" href="{{ url('city')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-city" style="color: #153d77"></i> <span class="align-middle">City</span>
                 </a>
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+                <a class="sidebar-link" href="{{ url('rule')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-times" style="color: #153d77"></i> <span class="align-middle">Rules and Restriction</span>
                 </a>
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+                <a class="sidebar-link" href="{{ url('term')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-file-word" style="color: #153d77"></i> <span class="align-middle">Terms and Condition</span>
                 </a>
             </li>

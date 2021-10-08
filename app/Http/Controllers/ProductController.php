@@ -23,12 +23,22 @@ class ProductController extends Controller
             'product_name' => ['required', 'max:250'],
             'description' => ['required', 'max:250'],
             'price' => ['required', 'max:250'],
-            'image' => ['required', 'max:250'],
+            'image' => ['required', 'max:500'],
             'status' => ['required', 'max:250'],
         ]);
 
+        $file = $request->image->getClientOriginalName();
+        $filename = pathinfo($file, PATHINFO_FILENAME);
+
+        $imageName = $filename.time().'.'.$request->image->extension();  
+        $image = $request->image->move(public_path('images/product'), $imageName);
+
         $request->request->add(['created_user' => Auth::user()->id]);
-        Product::create($request->all());
+
+        $requestData = $request->all();
+        $requestData['image'] = $imageName;
+
+        Product::create($requestData);
 
         return redirect()->back()->with('success','Successfully Added');
     }

@@ -4,16 +4,16 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Product
+                    Terms and Conditions
                 </h1>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Product List
+                            <h5 class="card-title">Terms and Conditions List
                                 <button type="button" class="btn btn-primary add" data-toggle="modal" data-target="#defaultModalPrimary" style="float:right">
-                                    Add Product
+                                    Add Terms and Conditions
                                 </button>
                             </h5>
                         </div>
@@ -25,26 +25,20 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Product Name</th>
+                                                <th>Terms and Conditions</th>
                                                 <th>Description</th>
-                                                <th>Price</th>
-                                                <th>Image</th>
-                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($products as $key => $product)
+                                            @foreach ($terms as $key => $term)
                                             <tr>
                                                 <td>{{ ++$key}}</td>
-                                                <td>{{ $product->product_name}}</td>
-                                                <td>{{ $product->description}}</td>
-                                                <td>{{ $product->price}}</td>
-                                                <td > <img src="{{ asset('images/product/' . $product->image)}}" style="width: 50px; height:50px"> </td>
-                                                <td>{{ $product->status}}</td>
+                                                <td>{{ $term->term}}</td>
+                                                <td>{{ $term->description}}</td>
                                                 <td class="table-action">
-                                                    <a href="#" class="align-middle fas fa-fw fa-pen edit" title="Edit" data-toggle="modal" data-target="#defaultModalPrimary" id={{$product->id}}></a>
-                                                    <a href="{{url('product/destroy/' . $product->id)}}" onclick="alert('Are you sure you want to Delete?')"><i class="align-middle fas fa-fw fa-trash"></i></a>
+                                                    <a href="#" class="align-middle fas fa-fw fa-pen edit" title="Edit" data-toggle="modal" data-target="#defaultModalPrimary" id={{$term->id}}></a>
+                                                    <a href="{{url('term/destroy/' . $term->id)}}" onclick="alert('Are you sure you want to Delete?')"><i class="align-middle fas fa-fw fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -62,36 +56,22 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Product</h5>
+                        <h5 class="modal-title">Add Terms and Conditions</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body m-3">
-                        <form id="modal-form" action="{{url('product/save')}}" method="post" enctype="multipart/form-data">
+                        <form id="modal-form" action="{{url('term/save')}}" method="post">
                             @csrf
                         <div class="form-group col-md-12">
-                            <label for="inputPassword4">Product Name</label>
-                            <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" required>
+                            <label for="inputPassword4">Terms and Conditions</label>
+                            <input type="text" class="form-control" id="term" name="term" placeholder="Terms and Conditions" required>
                         </div>
+
                         <div class="form-group col-md-12">
                             <label for="inputPassword4">Description</label>
                             <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="inputPassword4">Price</label>
-                            <input type="number" class="form-control" id="price" name="price" placeholder="Price" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="inputPassword4">image</label>
-                            <input type="file" class="form-control" id="image" name="image" placeholder="Upload Image" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="inputState">Status</label>
-                            <select id="status" name="status" class="form-control" required> 
-                                <option value="Available">Available</option>
-                                <option value="Unavailable">Unavailable</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -113,20 +93,20 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '/product/edit/' + id,
+                url: '/term/edit/' + id,
                 method: 'get',
                 data: {
 
                 },
                 success: function(data) {
-                    $('.modal-title').text('Update Product');
+                    $('.modal-title').text('Update Terms and Conditions');
                     $('.submit-button').text('Update');
                         $.each(data, function() {
                             $.each(this, function(k, v) {
                                $('[name ="'+k+'"]').val(v);
                             });
                         });
-                    $('#modal-form').attr('action', 'product/update/' + data.product.id);
+                    $('#modal-form').attr('action', 'term/update/' + data.term.id);
                 }
             });
 
@@ -143,9 +123,9 @@
             });
 
             $('.add').click(function(){
-                $('.modal-title').text('Add Product');
+                $('.modal-title').text('Add Terms and Conditions');
                 $('.submit-button').text('Add');
-                $('#modal-form').attr('action', 'product/save');
+                $('#modal-form').attr('action', 'term/save');
             })
         });
     </script>
