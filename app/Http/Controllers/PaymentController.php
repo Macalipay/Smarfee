@@ -3,38 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
-use App\SalesOrder;
+use App\DailySale;
+use App\PaymentType;
 use Illuminate\Http\Request;
-use Auth;
-
 
 class PaymentController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $payments = Payment::orderBy('id', 'desc')->get();
-        return view('backend.pages.sales_order.payment', compact('payments'));
+        return view('backend.pages.payment.payment', compact('payments'));
     }
 
     public function store(Request $request)
     {
         $payment = $request->validate([
-            'sales_order_id' => [ 'required', 'max:250'],
+            'dailysales_id' => [ 'required', 'max:250'],
             'amount' => ['between:0,99.99', 'required', 'max:250'],
-            'payment_type' => ['required', 'max:250'],
+            'payment' => ['required', 'max:250'],
             'date' => ['required', 'max:250'],
         ]);
 
-        $sales_order = SalesOrder::find($request->sales_order_id);
+        $daily_sale = DailySale::find($request->dailysales_id);
         
-        $current_balance = $sales_order->balance - $request->amount;
+        $current_balance = $daily_sale->balance - $request->amount;
 
         if($current_balance <= 0) {
-            SalesOrder::where('id', $request->sales_order_id)->update(['balance' => $current_balance, 'status' => 'Paid']);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid', 'status' => 'Delivered']);
         } else {
-            SalesOrder::where('id', $request->sales_order_id)->update(['balance' => $current_balance, 'status' => 'On-going']);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid']);
         }
-
         Payment::create($request->all());
 
         return redirect()->back()->with('success','Successfully Added');
@@ -49,16 +52,16 @@ class PaymentController extends Controller
     public function update(Request $request, $id)
     {
 
-        $sales_order = SalesOrder::find($request->sales_order_id);
+        $daily_sale = DailySale::find($request->dailysales_id);
         $original_amount = Payment::where('id', $id)->first();
 
-        $current_balance = $sales_order->balance + $original_amount->amount - $request->amount;
+        $current_balance = $daily_sale->balance + $original_amount->amount - $request->amount;
 
         
         if($current_balance <= 0) {
-            SalesOrder::where('id', $request->sales_order_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid']);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid']);
         } else {
-            SalesOrder::where('id', $request->sales_order_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid']);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid']);
         }
 
         Payment::find($id)->update($request->all());
@@ -69,14 +72,14 @@ class PaymentController extends Controller
     public function destroy($id)
     {
         $payment = Payment::find($id);
-        $sales_order = SalesOrder::find($payment->sales_order_id);
+        $daily_sale = DailySale::find($payment->dailysales_id);
 
-        $current_balance = $sales_order->balance + $payment->amount;
+        $current_balance = $daily_sale->balance + $payment->amount;
 
         if($current_balance <= 0) {
-            SalesOrder::where('id', $payment->sales_order_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid']);
+            DailySale::where('id', $payment->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid']);
         } else {
-            SalesOrder::where('id', $payment->sales_order_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid']);
+            DailySale::where('id', $payment->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid']);
         }
 
         $payment->delete();

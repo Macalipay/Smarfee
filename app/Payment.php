@@ -7,17 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     protected $fillable = [
-        'id',
-        'sales_order_id',
+        'dailysales_id',
         'amount',
-        'payment_type',
+        'payment',
+        'status',
         'date',
-        'created_at',
-        'updated_at'
     ];
 
-    public function sales_order()
+    public function dailysale()
     {
-        return $this->belongsTo(SalesOrder::class, 'sales_order_id');
+        return $this->belongsTo(DailySale::class, 'dailysales_id');
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class, 'payment_id');
     }
 }

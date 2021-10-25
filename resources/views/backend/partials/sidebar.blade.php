@@ -17,10 +17,16 @@
                 Main
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
-                    <i class="align-middle mr-2 fa fa-fw fa-chart-pie" style="color: #153d77"></i> <span class="align-middle">Dashboard</span>
+                <a href="#dashboards" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle mr-2 fas fa-fw fa-chart-pie" style="color: #153d77"></i> <span class="align-middle">Dashboard</span>
                 </a>
+                <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('dashboard')}}">Daily</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Monthly</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Master File</a></li>
+                </ul>
             </li>
+
 
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{url('restaurant')}}">
@@ -33,13 +39,23 @@
             </li>
            
             <li class="sidebar-item">
-                <a href="#dashboards" data-toggle="collapse" class="sidebar-link collapsed">
-                    <i class="align-middle mr-2 fas fa-fw fa-cart-plus"></i> <span class="align-middle">Sales Order</span>
+                <a href="#salesorder" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle mr-2 fas fa-fw fa-cart-plus" style="color: #153d77"></i> <span class="align-middle">Sales Order</span>
                 </a>
-                <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('sales_order')}}">Daily Sales</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('sales_order/complete')}}">All Sales</a></li>
+                <ul id="salesorder" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('daily_sales')}}">Daily Sales</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('daily_sales/all')}}">All Sales</a></li>
                     <li class="sidebar-item"><a class="sidebar-link" href="{{ url('payment')}}">Payment</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="#inventoryside" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle mr-2 fas fa-fw fa-dolly-flatbed" style="color: #153d77"></i> <span class="align-middle">Inventory</span>
+                </a>
+                <ul id="inventoryside" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('inventory')}}">Inventory</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('inventory/view_add_stock')}}">Inventory Transaction</a></li>
                 </ul>
             </li>
 

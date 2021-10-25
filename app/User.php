@@ -5,10 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -16,14 +17,24 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'firstname', 'lastname', 'email', 'designation', 'address', 'password', 'contact_number', 'picture'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+    public function user()
+    {
+        return $this->hasOne(Attendance::class);
+    }
+
+    public function user_expense()
+    {
+        return $this->hasOne(Expense::class);
+    }
+
+    public function DailySale()
+    {
+        return $this->hasOne(DailySale::class);
+    }
+
     protected $hidden = [
         'password', 'remember_token',
     ];

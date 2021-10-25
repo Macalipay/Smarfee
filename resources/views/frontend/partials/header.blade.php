@@ -22,7 +22,7 @@
         </ul>
       </nav>
 
-      <a href="#portfolio" class="get-started-btn scrollto">Order Now</a>
+      <a href="{{ url('shop')}}" class="get-started-btn scrollto">Order Now</a>
 
     </div>
   </header>
