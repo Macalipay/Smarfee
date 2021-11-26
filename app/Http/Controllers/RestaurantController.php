@@ -29,7 +29,7 @@ class RestaurantController extends Controller
             'email' => ['required', 'max:250'],
             'status' => ['required', 'max:250'],
             'type' => ['required', 'max:250'],
-            'map' => ['required', 'max:250'],
+            'map' => ['required'],
             'city_id' => ['required', 'max:250'],
             'image' => ['required'],
         ]);
