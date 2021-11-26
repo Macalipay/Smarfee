@@ -33,9 +33,11 @@ class LoginController extends Controller
     }
 
     protected function authenticated($request, $user){
-        if(Auth::user()->designation == 'Admin' || Auth::user()->designation == 'Owner'){
+        if(Auth::user()->designation == 'Admin'){
+            return redirect('/restaurant');
+        } else if(Auth::user()->designation == 'Owner') {
             return redirect('/dashboard');
-        } else {
+        }else {
             return redirect('/');
         }
     }
