@@ -10,7 +10,11 @@
         <div class="col-lg-12 d-flex justify-content-center">
           <ul id="portfolio-flters">
             <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".1">Near Me</li>
+            @if (Auth::guest())
+              <li data-filter="Near Me">Need to Login (Near Me)</li>
+            @else
+              <li data-filter=".{{Auth::user()->city_id}}">Near Me</li>
+            @endif
             <li data-filter=".Dine_in">Dine in</li>
             <li data-filter=".Take_out">Take out</li>
             <li data-filter=".Dine_in_Take_out">Dine in and Take out</li>
