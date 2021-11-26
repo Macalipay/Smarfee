@@ -12,6 +12,7 @@ class Payment extends Model
         'payment',
         'status',
         'date',
+        'restaurant_id',
     ];
 
     public function dailysale()

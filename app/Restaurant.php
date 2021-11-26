@@ -12,6 +12,15 @@ class Restaurant extends Model
         'address',
         'contact',
         'email',
-        'status'
+        'status',
+        'type',
+        'map',
+        'city_id',
+        'image',
     ];
+
+    public function user_restaurant()
+    {
+        return $this->hasOne(User::class);
+    }
 }

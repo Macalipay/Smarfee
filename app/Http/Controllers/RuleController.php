@@ -13,7 +13,7 @@ class RuleController extends Controller
 {
     public function index()
     {
-        $rules = Rule::orderBy('id')->get();
+        $rules = Rule::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
         return view('backend.pages.rule', compact('rules'));
     }
 
@@ -24,7 +24,7 @@ class RuleController extends Controller
             'description' => ['required', 'max:250'],
         ]);
 
-        $request->request->add(['created_user' => Auth::user()->id]);
+        $request->request->add(['created_user' => Auth::user()->id, 'restaurant_id' => Auth::user()->restaurant_id]);
         Rule::create($request->all());
 
         return redirect()->back()->with('success','Successfully Added');

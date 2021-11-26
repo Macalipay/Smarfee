@@ -12,6 +12,7 @@ class Order extends Model
         'quantity',
         'amount',
         'total',
+        'restaurant_id',
     ];
 
     public function dailySale()

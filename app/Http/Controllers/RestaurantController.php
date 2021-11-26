@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Restaurant;
+use App\City;
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
@@ -14,7 +15,8 @@ class RestaurantController extends Controller
     public function index()
     {
         $restaurants = Restaurant::orderBy('id')->get();
-        return view('backend.pages.restaurant', compact('restaurants'));
+        $cities = City::orderBy('id')->get();
+        return view('backend.pages.restaurant', compact('restaurants', 'cities'));
     }
 
     public function store(Request $request)
@@ -26,10 +28,23 @@ class RestaurantController extends Controller
             'contact' => ['required', 'max:250'],
             'email' => ['required', 'max:250'],
             'status' => ['required', 'max:250'],
+            'type' => ['required', 'max:250'],
+            'map' => ['required', 'max:250'],
+            'city_id' => ['required', 'max:250'],
+            'image' => ['required'],
         ]);
 
-        $request->request->add(['created_user' => Auth::user()->id]);
-        Restaurant::create($request->all());
+        $file = $request->image->getClientOriginalName();
+        $filename = pathinfo($file, PATHINFO_FILENAME);
+
+        $imageName = $filename.time().'.'.$request->image->extension();  
+        $image = $request->image->move(public_path('images/logo'), $imageName);
+
+        $requestData = $request->all();
+        $requestData['image'] = $imageName;
+
+        $request->request->add(['restaurant_id' => Auth::user()->restaurant_id]);
+        Restaurant::create($requestData);
 
         return redirect()->back()->with('success','Successfully Added');
     }

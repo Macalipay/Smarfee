@@ -17,8 +17,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'email', 'designation', 'address', 'password', 'contact_number', 'picture'
+        'firstname', 'restaurant_id', 'lastname', 'email', 'designation', 'address', 'password', 'contact_number', 'picture', 'city_id'
     ];
+
+    
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class, 'restaurant_id');
+    }
 
     public function user()
     {

@@ -20,7 +20,12 @@ class CreateProductsTable extends Migration
             $table->string('price');
             $table->string('image')->nullable();
             $table->string('status');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+                ->references('id')
+                ->on('restaurants');
         });
     }
 

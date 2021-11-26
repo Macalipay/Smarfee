@@ -67,19 +67,3 @@
     </div>
     <div class="clearfix"></div>
   </nav>
-
-  <div class="container search-div">
-    <div class="row">
-      <div class="col-lg-4 col-md-4">
-        <div class="all-cate custom-select2">
-          <select>
-            <option>Coffee Brew</option>
-            <option>Iced Coffee</option>
-            <option>Milktea</option>
-            <option>Dessert Frappe</option>
-            <option>Milkshakes</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>

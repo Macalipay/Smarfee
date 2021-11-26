@@ -22,7 +22,12 @@ class CreateDriversTable extends Migration
             $table->string('email');
             $table->string('file')->nullable();
             $table->string('status');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+            ->references('id')
+            ->on('restaurants');
         });
     }
 

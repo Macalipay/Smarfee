@@ -9,5 +9,6 @@ class Rule extends Model
     protected $fillable = [
         'rule',
         'description',
+        'restaurant_id',
     ];
 }

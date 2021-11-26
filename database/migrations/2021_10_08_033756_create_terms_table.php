@@ -17,7 +17,12 @@ class CreateTermsTable extends Migration
             $table->bigIncrements('id');
             $table->string('term');
             $table->string('description');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+                ->references('id')
+                ->on('restaurants');
         });
     }
 

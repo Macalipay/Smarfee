@@ -21,7 +21,12 @@ class CreateDailySalesTable extends Migration
             $table->decimal('balance', 13, 2)->default(0.00);
             $table->string('payment_status');
             $table->string('status');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+                ->references('id')
+                ->on('restaurants');
 
             $table->foreign('user_id')
                 ->references('id')

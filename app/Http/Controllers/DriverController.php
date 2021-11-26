@@ -13,7 +13,7 @@ class DriverController extends Controller
 {
     public function index()
     {
-        $drivers = Driver::orderBy('id')->get();
+        $drivers = Driver::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
         return view('backend.pages.driver', compact('drivers'));
     }
 
@@ -35,7 +35,7 @@ class DriverController extends Controller
         $imageName = $filename.time().'.'.$request->file->extension();  
         $file = $request->file->move(public_path('images/driver'), $imageName);
 
-        $request->request->add(['created_user' => Auth::user()->id]);
+        $request->request->add(['created_user' => Auth::user()->id, 'restaurant_id' => Auth::user()->restaurant_id]);
 
         $requestData = $request->all();
         $requestData['file'] = $imageName;

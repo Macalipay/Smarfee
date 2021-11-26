@@ -54,11 +54,20 @@
               <input type="text" class="form-control" id="contact_number" name="contact_number">
             </div>
           </div>
+          <div class="form-group col-md-12">
+            <label for="inputState">City</label>
+            <select id="city_id" name="city_id" class="form-control" required> 
+                @foreach ($cities as $city)
+                    <option value="{{$city->id}}">{{$city->city_name}}</option>
+                @endforeach
+            </select>
+          </div>
          
           </div>
           <div class="col-md-8 col-12">
             <div class="form-group">
               <input type="submit" class="add-to-cart2 btn mt-31" value="Create Account">
+              <a type="button" class="add-to-cart2 btn mt-31" href="{{('/shop/login')}}">Login</a>
             </div>
           </div>
         </div>

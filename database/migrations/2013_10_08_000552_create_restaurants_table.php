@@ -21,7 +21,15 @@ class CreateRestaurantsTable extends Migration
             $table->string('contact');
             $table->string('email');
             $table->string('status');
+            $table->string('type');
+            $table->string('map');
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('city_id')
+                ->references('id')
+                ->on('cities');
+
         });
     }
 

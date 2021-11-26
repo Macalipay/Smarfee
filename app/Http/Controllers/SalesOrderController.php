@@ -13,7 +13,7 @@ class SalesOrderController extends Controller
 {
     public function index()
     {
-        $sales_orders = SalesOrder::where('status', '!=', 'Completed')->where('status', '!=', 'Paid')->orderBy('id')->get();
+        $sales_orders = SalesOrder::where('restaurant_id', Auth::user()->restaurant_id)->where('status', '!=', 'Completed')->where('status', '!=', 'Paid')->orderBy('id')->get();
         return view('backend.pages.sales_order.order', compact('sales_orders'));
     }
 
@@ -34,7 +34,7 @@ class SalesOrderController extends Controller
             'status' => ['required', 'max:250'],
         ]);
 
-        $request->request->add(['balance' => $request->total_amount, 'created_user' => Auth::user()->id]);
+        $request->request->add(['balance' => $request->total_amount, 'created_user' => Auth::user()->id, 'restaurant_id' => Auth::user()->restaurant_id]);
         SalesOrder::create($request->all());
 
         return redirect()->back()->with('success','Successfully Added');

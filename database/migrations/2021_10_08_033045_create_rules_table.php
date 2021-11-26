@@ -17,7 +17,12 @@ class CreateRulesTable extends Migration
             $table->bigIncrements('id');
             $table->string('rule');
             $table->string('description');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+            ->references('id')
+            ->on('restaurants');
         });
     }
 

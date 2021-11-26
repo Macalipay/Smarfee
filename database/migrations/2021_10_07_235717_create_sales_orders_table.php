@@ -22,8 +22,12 @@ class CreateSalesOrdersTable extends Migration
             $table->string('total_amount');
             $table->string('balance');
             $table->string('status');
-            $table->string('restaurant_id')->nullable();
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+            ->references('id')
+            ->on('restaurants');
         });
     }
 

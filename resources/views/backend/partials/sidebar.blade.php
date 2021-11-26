@@ -16,28 +16,31 @@
             <li class="sidebar-header">
                 Main
             </li>
+            @role('Owner')
             <li class="sidebar-item">
                 <a href="#dashboards" data-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle mr-2 fas fa-fw fa-chart-pie" style="color: #153d77"></i> <span class="align-middle">Dashboard</span>
                 </a>
                 <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                     <li class="sidebar-item"><a class="sidebar-link" href="{{ url('dashboard')}}">Daily</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">Monthly</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">Master File</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('dashboard/monthly') }}">Monthly</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('dashboard/masterfile') }}">Master File</a></li>
                 </ul>
             </li>
+            @endrole
 
-
+            @role('Admin')
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{url('restaurant')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-store-alt" style="color: #153d77"></i> <span class="align-middle">Restaurant</span>
                 </a>
             </li>
+            @endrole
 
             <li class="sidebar-header">
                 Transaction
             </li>
-           
+           @role('Owner')
             <li class="sidebar-item">
                 <a href="#salesorder" data-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle mr-2 fas fa-fw fa-cart-plus" style="color: #153d77"></i> <span class="align-middle">Sales Order</span>
@@ -58,13 +61,7 @@
                     <li class="sidebar-item"><a class="sidebar-link" href="{{ url('inventory/view_add_stock')}}">Inventory Transaction</a></li>
                 </ul>
             </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ url('product')}}">
-                    <i class="align-middle mr-2 fa fa-fw fa-mug-hot" style="color: #153d77"></i> <span class="align-middle">Product</span>
-                </a>
-            </li>
-
+            
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{ url('driver')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-motorcycle" style="color: #153d77"></i> <span class="align-middle">Drivers</span>
@@ -74,6 +71,14 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="#">
                     <i class="align-middle mr-2 fa fa-fw fa-star-half-alt" style="color: #153d77"></i> <span class="align-middle">Reviews</span>
+                </a>
+            </li>
+            @endrole
+
+            @role('Admin')
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ url('user')}}">
+                    <i class="align-middle mr-2 fa fa-fw fa-users" style="color: #153d77"></i> <span class="align-middle">Users</span>
                 </a>
             </li>
 
@@ -86,7 +91,9 @@
                     <i class="align-middle mr-2 fa fa-fw fa-city" style="color: #153d77"></i> <span class="align-middle">City</span>
                 </a>
             </li>
+            @endrole
 
+            @role('Owner')
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{ url('rule')}}">
                     <i class="align-middle mr-2 fa fa-fw fa-times" style="color: #153d77"></i> <span class="align-middle">Rules and Restriction</span>
@@ -98,6 +105,7 @@
                     <i class="align-middle mr-2 fa fa-fw fa-file-word" style="color: #153d77"></i> <span class="align-middle">Terms and Condition</span>
                 </a>
             </li>
+            @endrole
         </ul>
     </div>
 </nav>

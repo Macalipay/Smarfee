@@ -14,17 +14,17 @@ class DailySaleController extends Controller
     public function index()
     {
         $dt = Carbon::now();
-        $daily_sales = DailySale::where('payment_status', '!=', 'Paid')->where('status', 'Check Out')->orderBy('id', 'desc')->get();
-        $inventories = Inventory::orderBy('id')->get();
+        $daily_sales = DailySale::where('restaurant_id', Auth::user()->restaurant_id)->where('payment_status', '!=', 'Paid')->where('status', 'Check Out')->orderBy('id', 'desc')->get();
+        $inventories = Inventory::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
         return view('backend.pages.sales.daily_sales', compact('daily_sales', 'inventories'));
     }
 
     public function all()
     {
         $dt = Carbon::now();
-        $daily_sales = DailySale::orderBy('id', 'desc')->get();
-        $daily_sale = Payment::where('date', $dt->toDateString())->sum('amount');
-        $unpaid = DailySale::where('payment_status', 'Unpaid')->sum('balance');
+        $daily_sales = DailySale::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id', 'desc')->get();
+        $daily_sale = Payment::where('restaurant_id', Auth::user()->restaurant_id)->where('date', $dt->toDateString())->sum('amount');
+        $unpaid = DailySale::where('restaurant_id', Auth::user()->restaurant_id)->where('payment_status', 'Unpaid')->sum('balance');
         return view('backend.pages.sales.all_sales', compact('daily_sales', 'daily_sale', 'unpaid'));
     }
 
@@ -39,7 +39,7 @@ class DailySaleController extends Controller
             'payment_status' => ['required', 'max:250'],
         ]);
 
-        $request->request->add(['balance' => $request->amount]);
+        $request->request->add(['balance' => $request->amount, 'restaurant_id' => Auth::user()->restaurant_id]);
         
         DailySale::create($request->all());
 

@@ -14,5 +14,6 @@ class Driver extends Model
         'email',
         'file',
         'status',
+        'restaurant_id',
     ];
 }

@@ -23,7 +23,12 @@ class CreateInventoriesTable extends Migration
             $table->string('type');
             $table->string('status')->default('Out of Stock');
             $table->string('photo');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+            ->references('id')
+            ->on('restaurants');
         });
     }
 

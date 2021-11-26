@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Payment;
 use App\DailySale;
 use App\PaymentType;
+use Auth;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -16,7 +17,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::orderBy('id', 'desc')->get();
+        $payments = Payment::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id', 'desc')->get();
         return view('backend.pages.payment.payment', compact('payments'));
     }
 
@@ -34,10 +35,11 @@ class PaymentController extends Controller
         $current_balance = $daily_sale->balance - $request->amount;
 
         if($current_balance <= 0) {
-            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid', 'status' => 'Delivered']);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid', 'status' => 'Delivered', 'restaurant_id' => Auth::user()->restaurant_id]);
         } else {
-            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid']);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid', 'restaurant_id' => Auth::user()->restaurant_id]);
         }
+        $request->request->add(['restaurant_id' => Auth::user()->restaurant_id]);
         Payment::create($request->all());
 
         return redirect()->back()->with('success','Successfully Added');

@@ -29,14 +29,12 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-6">
-                  <input type="checkbox">
-                  Save Password</div>
-                <div class="col-6 text-right">Forget your Password</div>
               </div>
             </div>
             <div class="clearfix"></div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary">Sign in</button>
+              <button type="submit" class="btn btn-primary mb-2">Sign in</button> 
+              <a class="btn btn-primary mb-2" href="{{('/shop/register')}}" style="color: white">Register</a>
             </div>
           </form>
         </div>

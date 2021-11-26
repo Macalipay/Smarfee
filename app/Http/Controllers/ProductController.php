@@ -9,7 +9,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::orderBy('id')->get();
+        $products = Product::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
         return view('backend.pages.maintenance.product', compact('products'));
     }
 
@@ -19,7 +19,7 @@ class ProductController extends Controller
             'product' => ['required', 'max:250'],
         ]);
 
-        $request->request->add(['created_user' => Auth::user()->id]);
+        $request->request->add(['created_user' => Auth::user()->id, 'restaurant_id' => Auth::user()->restaurant_id]);
         Product::create($request->all());
 
         return redirect()->back()->with('success','Successfully Added');

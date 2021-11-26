@@ -19,6 +19,13 @@ class CreateCitiesTable extends Migration
             $table->string('city_name');
             $table->timestamps();
         });
+
+        DB::table('cities')->insert([
+            [
+                'city_code' => 'CAL', 
+                'city_name' => 'CALOOCAN', 
+            ]
+        ]);
     }
 
     /**

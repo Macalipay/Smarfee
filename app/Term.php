@@ -9,5 +9,6 @@ class Term extends Model
     protected $fillable = [
         'term',
         'description',
+        'restaurant_id',
     ];
 }

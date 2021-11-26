@@ -14,6 +14,7 @@ class DailySale extends Model
         'balance',
         'payment_status',
         'status',
+        'restaurant_id',
     ];
 
     public function inventory()

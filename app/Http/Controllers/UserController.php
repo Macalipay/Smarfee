@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Restaurant;
+use App\ModelHasRole;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Hash;
@@ -17,8 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id')->get();
-        return view('backend.pages.user.user', compact('users'));
+        $users = User::orderBy('id')->where('designation', '!=' , 'Admin')->get();
+        $restaurants = Restaurant::orderBy('id')->get();
+        return view('backend.pages.user.user', compact('users', 'restaurants'));
     }
 
     public function create()
@@ -28,7 +31,27 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $last_user = User::select('id')->orderBy('id', 'desc')->first();
+
+        $user = $request->validate([
+            'firstname' => ['required', 'max:250'],
+            'lastname' => ['required', 'max:250'],
+            'address' => ['required', 'max:250'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'contact_number' => ['required', 'max:250'],
+            'restaurant_id' => ['required', 'max:250'],
+        ]);
+
+        ModelHasRole::create([
+            'role_id' => 2,
+            'model_type' => 'App\User',
+            'model_id' => $last_user->id + 1,
+        ]);
+
+        $request->request->add(['password' => '$2y$10$YngC733pnwE7QKLM65glCOjNFCX.8PKAzY0CquuH6UMd1qpTY/vYe', 'designation' => 'Owner']);
+        User::create($request->all());
+
+        return redirect()->back()->with('success','Successfully Added');
     }
 
     public function show($id)

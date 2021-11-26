@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.master.template');
-});
+Route::get('/', 'WebsiteController@index')->name('website');
 
 Route::get('/admin', function () {
     return view('auth.login');
@@ -46,6 +44,7 @@ Route::group(['prefix' => 'order'], function (){
 // SHOP
 Route::group(['prefix' => 'shop'], function (){
     Route::get          ('/',                            'ShopController@index'                          )->name('selection');
+    Route::get          ('/order/{id}',                  'ShopController@shop'                          )->name('selection');
     Route::post         ('/save',                        'ShopController@store'                          )->name('reason');
     Route::get          ('/edit/{id}',                   'ShopController@edit'                           )->name('reason');
     Route::post         ('/update/{id}',                 'ShopController@update'                         )->name('reason_update');
@@ -165,6 +164,15 @@ Route::group(['prefix' => 'term'], function (){
     Route::get          ('/edit/{id}',                   'TermController@edit'                            )->name('client_edit');
     Route::post         ('/update/{id}',                 'TermController@update'                          )->name('client_update');
     Route::get          ('/destroy/{id}',                'TermController@destroy'                         )->name('client_destroy');
+});
+
+// TERMS AND CONDITION
+Route::group(['prefix' => 'user'], function (){
+    Route::get          ('/',                            'UserController@index'                           )->name('client');
+    Route::post         ('/save',                        'UserController@store'                           )->name('client_store');
+    Route::get          ('/edit/{id}',                   'UserController@edit'                            )->name('client_edit');
+    Route::post         ('/update/{id}',                 'UserController@update'                          )->name('client_update');
+    Route::get          ('/destroy/{id}',                'UserController@destroy'                         )->name('client_destroy');
 });
 
 Route::get('store', function () {

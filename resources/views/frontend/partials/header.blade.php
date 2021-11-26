@@ -10,19 +10,12 @@
           <li class="#hero"><a href="#hero">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#portfolio">Store</a></li>
-          <li><a href="#contact">Register</a></li>
-          <li class="drop-down"><a href="">Account</a>
-            <ul>
-              <li><a href="#">Order History</a></li>
-              <li><a href="#">View Account</a></li>
-              <li><a href="#">Logout</a></li>
-            </ul>
-          </li>
-
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="{{('/shop/login')}}">Account</a></li>
         </ul>
       </nav>
 
-      <a href="{{ url('shop')}}" class="get-started-btn scrollto">Order Now</a>
+      <a href="#portfolio" class="get-started-btn scrollto">Order Now</a>
 
     </div>
   </header>

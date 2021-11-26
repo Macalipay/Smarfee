@@ -19,7 +19,12 @@ class CreatePaymentsTable extends Migration
             $table->string('amount');
             $table->string('payment');
             $table->string('date');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+                ->references('id')
+                ->on('restaurants');
 
             $table->foreign('dailysales_id')
                 ->references('id')

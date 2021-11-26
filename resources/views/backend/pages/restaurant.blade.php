@@ -31,6 +31,7 @@
                                                 <th>Contact</th>
                                                 <th>Email</th>
                                                 <th>Status</th>
+                                                <th>Logo</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -44,6 +45,7 @@
                                                 <td>{{ $restaurant->contact}}</td>
                                                 <td>{{ $restaurant->email}}</td>
                                                 <td>{{ $restaurant->status}}</td>
+                                                <td width="400px"> <img src="{{ asset('images/logo/' . $restaurant->image)}}" alt="logo" srcset="" style="width:10%; height:10%"> </td>
                                                 <td class="table-action">
                                                     <a href="#" class="align-middle fas fa-fw fa-pen edit" title="Edit" data-toggle="modal" data-target="#defaultModalPrimary" id={{$restaurant->id}}></a>
                                                     <a href="{{url('restaurant/destroy/' . $restaurant->id)}}" onclick="alert('Are you sure you want to Delete?')"><i class="align-middle fas fa-fw fa-trash"></i></a>
@@ -70,7 +72,7 @@
                         </button>
                     </div>
                     <div class="modal-body m-3">
-                        <form id="modal-form" action="{{url('restaurant/save')}}" method="post">
+                        <form id="modal-form" action="{{url('restaurant/save')}}" method="post" enctype="multipart/form-data">
                             @csrf
                         <div class="form-group col-md-12">
                             <label for="inputPassword4">Owner Name</label>
@@ -98,6 +100,30 @@
                                 <option value="On-process">On-Process</option>
                                 <option value="Registered">Registered</option>
                             </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputState">Status</label>
+                            <select id="type" name="type" class="form-control" required> 
+                                <option value="Dine_in">Dine-in</option>
+                                <option value="Take_out">Take-out</option>
+                                <option value="Dine_in_Take_out">Dine in and Take Out</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputState">City</label>
+                            <select id="city_id" name="city_id" class="form-control" required> 
+                                @foreach ($cities as $city)
+                                    <option value="{{$city->id}}">{{$city->city_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">image</label>
+                            <input type="file" class="form-control" id="image" name="image" placeholder="Upload Image" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Map Location</label>
+                            <input type="text" class="form-control" id="map" name="map" placeholder="Map Location link" required>
                         </div>
                     </div>
                     <div class="modal-footer">

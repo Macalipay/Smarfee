@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Shop;
 use App\Inventory;
 use App\DailySale;
+use App\Restaurant;
 use App\Order;
+use App\City;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -22,6 +24,14 @@ class ShopController extends Controller
         return view('frontend.pages.shop.pages.shop', compact('products'));
     }
 
+    public function shop($id)
+    {
+        $restaurant = Restaurant::where('id', $id)->first();
+        $products = Inventory::where('restaurant_id', $id)->where('status', '!=', 'Out of Stock')->get();
+        return view('frontend.pages.shop.pages.shop', compact('products', 'restaurant'));
+    }
+
+
     public function history()
     {
         $sale = DailySale::where('user_id', Auth::user()->id)->where('payment_status', 'Unpaid')->first();
@@ -37,14 +47,13 @@ class ShopController extends Controller
 
     public function login()
     {
-        $products = Inventory::where('status', '!=', 'Out of Stock')->get();
         return view('frontend.pages.shop.pages.login');
     }
 
     public function register()
     {
-        $products = Inventory::where('status', '!=', 'Out of Stock')->get();
-        return view('frontend.pages.shop.pages.register');
+        $cities = City::orderBy('id')->get();
+        return view('frontend.pages.shop.pages.register', compact('cities'));
     }
 
     public function shopping_bag()
@@ -59,6 +68,7 @@ class ShopController extends Controller
         $product = $request->validate([
             'quantity' => ['required', 'max:250'],
             'inventory_id' => ['required', 'max:250'],
+            'restaurant_id' => ['required', 'max:250'],
         ]);
 
         $inventory = Inventory::where('id', $request->inventory_id)->firstOrFail();
@@ -82,7 +92,7 @@ class ShopController extends Controller
                 Inventory::find($request->inventory_id)->update(['quantity_stock' => $new_inventory]);
             }
 
-            $request->request->add(['daily_sale_id' => $sale->id, 'amount' => $inventory->price, 'total' => $total]);
+            $request->request->add(['daily_sale_id' => $sale->id, 'amount' => $inventory->price, 'total' => $total, 'restaurant_id' => $request->restaurant_id]);
             Order::create($request->all());
         } else {
             $sale = DailySale::create([
@@ -92,6 +102,7 @@ class ShopController extends Controller
                 'balance' => $total,
                 'payment_status' => 'Unpaid',
                 'status' => 'Place Order',
+                'restaurant_id' => $request->restaurant_id,
             ]);
 
             $inventory = Inventory::where('id', $request->inventory_id)->firstOrFail();
@@ -105,7 +116,7 @@ class ShopController extends Controller
                 Inventory::find($request->inventory_id)->update(['quantity_stock' => $new_inventory]);
             }
 
-            $request->request->add(['daily_sale_id' => $sale->id, 'amount' => $inventory->price, 'total' => $total]);
+            $request->request->add(['daily_sale_id' => $sale->id, 'amount' => $inventory->price, 'total' => $total, 'restaurant_id' => $request->restaurant_id]);
             Order::create($request->all());
         }
     }

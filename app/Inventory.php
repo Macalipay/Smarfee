@@ -15,6 +15,7 @@ class Inventory extends Model
         'type',
         'status',
         'photo',
+        'restaurant_id',
     ];
 
     public function inventory_transaction()

@@ -135,6 +135,7 @@
         }
 
       $(function() {
+            
             $('#orderTable').DataTable({
                 "scrollX": true,
                 "pageLength": 100

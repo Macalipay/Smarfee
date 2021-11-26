@@ -77,7 +77,6 @@
                           <td>{{ ++$key}}</td>
                           <td>
                             <a href="#" class="align-middle fa fa-fw fa-shopping-cart" onclick="orderList({{$sale->id}})" title="List of Order" data-toggle="modal" data-target="#orderModal" id={{$sale->id}}></a>
-                            <a href="#" class="align-middle fa fa-fw fa-retweet " onclick="reorder({{$sale->id}})" title="Re-Order" data-toggle="modal" data-target="#orderModal" id={{$sale->id}}></a>
                           </td>
                           <td>{{ $sale->user->firstname . ' ' . $sale->user->lastname}}</td>
                           <td>{{ $sale->description}}</td>

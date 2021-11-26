@@ -18,10 +18,13 @@
       <div class="col-lg-12 col-md-12">
         <div class="row">
           <div class="col-12">
+         
             <div class="right-heading">
               <div class="row">
+               
                 <div class="col-md-4 col-4">
-                  <h3>Shop Grid</h3>
+                
+                  <h3>Shop - {{$restaurant->store_name}} </h3>
                 </div>
                 <div class="col-md-8 col-8">
                   <div class="product-filter">
@@ -31,11 +34,13 @@
               </div>
             </div>
             <div class="clearfix"></div>
+            
+        
             <div id="products" class="row view-group">
               @foreach ($products as $product)
               <div class="item col-lg-4 col-md-4 mb-4 mb-4" id="{{$product->id}}">
                 <div class="thumbnail card product">
-                  <div class="img-event"> <a class="group list-group-image img-fluid" href="#"><img src="{{('images/product/' . $product->photo)}}" alt="" class="img-fluid" style="width: 300px; height: 300px" ></a> </div>
+                  <div class="img-event"> <a class="group list-group-image img-fluid" href="#"><img src="{{('/images/product/' . $product->photo)}}" alt="" class="img-fluid" style="width: 300px; height: 300px" ></a> </div>
                   <div class="caption card-body">
                     <h3 class="product-type">{{ $product->type }}</h3>
                     <h4 class="product-name">{{ $product->name }}</h4>
@@ -51,7 +56,7 @@
                               <button type="button" class="js-qty-down">-</button>
                               <input type="text" class="js-qty-input quantity" value="1"/>
                               <button type="button" class="js-qty-up">+</button>
-                              <button type="button" onclick="addToCart({{$product->id}})" class="add2"><i class="fa fa-shopping-bag" aria-hidden="true"></i></button>
+                              <button type="button" onclick="addToCart({{$product->id . ',' . $product->restaurant_id}})" class="add2"><i class="fa fa-shopping-bag" aria-hidden="true"></i></button>
                             </div>
                           </form>
                         </div>
@@ -62,10 +67,15 @@
                   </div>
                 </div>
               </div>
+           
               @endforeach
               <div class="clearfix"></div>
               <!-- Pagination -->
             </div>
+            <div>
+              <iframe style="border:0; width: 100%; height: 270px;" src="{{$restaurant->map}}" frameborder="0" allowfullscreen></iframe>
+            </div>
+
           </div>
         </div>
       </div>
@@ -76,7 +86,7 @@
 
 @section('scripts')
     <script>
-         function addToCart(id) {
+         function addToCart(id, restaurant_id) {
 
           if (confirm('Are you sure you want to add this item?')) {
               $.ajax({
@@ -88,6 +98,7 @@
                   data: {
                     quantity: $('#'+id+' .quantity').val(),
                     inventory_id: id,
+                    restaurant_id: restaurant_id,
                   },
                   success: function(data) {
                     

@@ -18,8 +18,18 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('contact_number')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('restaurant_id')->nullable();
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('restaurant_id')
+                ->references('id')
+                ->on('restaurants');
+
+            $table->foreign('city_id')
+                ->references('id')
+                ->on('cities');
         });
     }
 

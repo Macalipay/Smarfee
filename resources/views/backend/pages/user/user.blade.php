@@ -4,14 +4,14 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    User
+                    Users
                 </h1>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">User Maintenance Screen
+                            <h5 class="card-title">User List
                                 <button type="button" class="btn btn-primary add" data-toggle="modal" data-target="#defaultModalPrimary" style="float:right">
                                     Add User
                                 </button>
@@ -25,21 +25,20 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Store Name</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
-                                                <th>Action</th>
+                                                <th>Contact No.</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($users as $key => $user)
                                                 <tr>
                                                     <td>{{ ++$key}}</td>
-                                                    <td>{{ $user->name}}</td>
+                                                    <td>{{ $user->restaurant->store_name}}</td>
+                                                    <td>{{ $user->firstname." ".$user->middlename." ".$user->lastname }}</td>
                                                     <td>{{ $user->email}}</td>
-                                                    <td class="table-action">
-                                                        <a href="#" class="align-middle fas fa-fw fa-pen edit" title="Edit" data-toggle="modal" data-target="#defaultModalPrimary" id={{$user->id}}></a>
-                                                        <a href="{{url('user/destroy/' . $user->id)}}" onclick="alert('Are you sure you want to Delete?')"><i class="align-middle fas fa-fw fa-trash"></i></a>
-                                                    </td>
+                                                    <td>{{ $user->contact_number}}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -50,8 +49,22 @@
                     </div>
                 </div>
             </div>
-        </div>
-        {{-- MODAL --}}
+            
+            <div class="modal fade" id="confirmation" tabindex="-1" role="dialog" aria-labelledby="confirmationLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Are you sure you want to delete this data?
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmDelete(delete_id)">Yes</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+             {{-- MODAL --}}
         <div class="modal fade" id="defaultModalPrimary" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -62,11 +75,35 @@
                         </button>
                     </div>
                     <div class="modal-body m-3">
-                        <form id="modal-form" action="{{url('user/save')}}" method="post">
+                        <form id="modal-form" action="{{url('driver/save')}}" method="post" enctype="multipart/form-data">
                             @csrf
                         <div class="form-group col-md-12">
-                            <label for="inputPassword4">User Name</label>
-                            <input type="text" class="form-control" id="user" name="user" placeholder="User">
+                            <label for="inputPassword4">First Name</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Last Name</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Address</label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Contact</label>
+                            <input type="text" class="form-control" id="contact_number" name="contact_number" placeholder="Contact Number" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputState">Restaurant</label>
+                            <select id="restaurant_id" name="restaurant_id" class="form-control" required> 
+                                @foreach ($restaurants as $restaurant)
+                                    <option value="{{$restaurant->id}}">{{$restaurant->store_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -77,18 +114,21 @@
                 </div>
             </div>
         </div>
+        </div>
+       
     </main>
 @endsection
 
 @section('scripts')
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
+        var delete_id = '';
         function edit(id){
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '/user/edit/' + id,
+                url: '/symptoms/edit/' + id,
                 method: 'get',
                 data: {
 
@@ -98,10 +138,10 @@
                     $('.submit-button').text('Update');
                         $.each(data, function() {
                             $.each(this, function(k, v) {
-                                $('#'+k).val(v);
+                               $('[name ="'+k+'"]').val(v);
                             });
                         });
-                    $('#modal-form').attr('action', 'user/update/' + data.users.id);
+                    $('#modal-form').attr('action', 'symptoms/update/' + data.symptoms.id);
                 }
             });
 
@@ -109,7 +149,8 @@
 
         $(function() {
             $('#datatables').DataTable({
-                responsive: true
+                responsive: true,
+                "pageLength": 100
             });
 
             $( "table" ).on( "click", ".edit", function() {
@@ -119,9 +160,23 @@
             $('.add').click(function(){
                 $('.modal-title').text('Add User');
                 $('.submit-button').text('Add');
-                $('#modal-form').attr('action', 'user/save');
-
+                $('#modal-form').attr('action', '/user/save');
             })
         });
+
+        function confirmDelete(id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/symptoms/destroy/' + id,
+                method: 'get',
+                data: {
+                },
+                success: function(data) {
+                    location.reload();
+                }
+            });
+        }
     </script>
 @endsection

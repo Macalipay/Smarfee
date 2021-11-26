@@ -12,7 +12,7 @@ class InventoryController extends Controller
 {
     public function index()
     {
-        $inventories = Inventory::orderBy('id', 'asc')->get();
+        $inventories = Inventory::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id', 'asc')->get();
         return view('backend.pages.inventory.inventory', compact('inventories'));
     }
 
@@ -41,6 +41,7 @@ class InventoryController extends Controller
 
         $imageName = $filename.time().'.'.$request->photo->extension();  
         $image = $request->photo->move(public_path('images/product'), $imageName);
+        $request->request->add(['restaurant_id' => Auth::user()->restaurant_id]);
 
         $requestData = $request->all();
         $requestData['photo'] = $imageName;
