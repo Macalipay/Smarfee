@@ -36,7 +36,7 @@
                                                 <tr>
                                                     <td>{{ ++$key}}</td>
                                                     <td>{{ $user->restaurant->store_name}}</td>
-                                                    <td>{{ $user->firstname." ".$user->middlename." ".$user->lastname }}</td>
+                                                    <td>{{ $user->firstname." ".$user->lastname }}</td>
                                                     <td>{{ $user->email}}</td>
                                                     <td>{{ $user->contact_number}}</td>
                                                 </tr>

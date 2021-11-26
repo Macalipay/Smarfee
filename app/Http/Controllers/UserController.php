@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id')->where('designation', '!=' , 'Admin')->get();
+        $users = User::orderBy('id')->where('designation', '!=' , 'Admin')->where('restaurant_id', '!=', NULL)->get();
         $restaurants = Restaurant::orderBy('id')->get();
         return view('backend.pages.user.user', compact('users', 'restaurants'));
     }
