@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Shop;
+use App\Rule;
+use App\Term;
 use App\Inventory;
 use App\DailySale;
 use App\Restaurant;
@@ -27,8 +29,10 @@ class ShopController extends Controller
     public function shop($id)
     {
         $restaurant = Restaurant::where('id', $id)->first();
+        $terms = Term::where('restaurant_id', $id)->get();
+        $rules = Rule::where('restaurant_id', $id)->get();
         $products = Inventory::where('restaurant_id', $id)->where('status', '!=', 'Out of Stock')->get();
-        return view('frontend.pages.shop.pages.shop', compact('products', 'restaurant'));
+        return view('frontend.pages.shop.pages.shop', compact('products', 'restaurant', 'terms', 'rules'));
     }
 
 
