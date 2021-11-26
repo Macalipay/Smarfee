@@ -12,7 +12,7 @@ table.dataTable thead th {
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Deleon's Best - All Sales
+                   {{Auth::user()->restaurant->store_name}} - All Sales
                 </h1>
                 <p style="color: white">Always record and update the Daily Sales</p>
             </div>
