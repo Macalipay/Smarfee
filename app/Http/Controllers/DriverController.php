@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Driver;
 use App\User;
+use App\ModelHasRole;
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
