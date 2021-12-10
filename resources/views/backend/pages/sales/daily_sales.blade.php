@@ -55,7 +55,7 @@ table.dataTable thead th {
                                                     </td>
                                                     <td>{{ $daily_sale->user->firstname . ' ' . $daily_sale->user->lastname}}</td>
                                                     <td>{{ $daily_sale->description}}</td>
-                                                    @if ($daily_sale->driver->driver_name != NULL)
+                                                    @if ($daily_sale->driver_id != NULL)
                                                         <td>{{ $daily_sale->driver->driver_name}}</td>
                                                     @else
                                                         <td>No Rider Assign</td>
