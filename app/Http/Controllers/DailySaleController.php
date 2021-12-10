@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\DailySale;
 use App\Inventory;
+use App\Notification;
 use Auth;
 use Carbon\Carbon;
 use App\Payment;
+use App\Driver;
 use Illuminate\Http\Request;
 
 class DailySaleController extends Controller
@@ -14,9 +16,29 @@ class DailySaleController extends Controller
     public function index()
     {
         $dt = Carbon::now();
-        $daily_sales = DailySale::where('restaurant_id', Auth::user()->restaurant_id)->where('payment_status', '!=', 'Paid')->where('status', 'Check Out')->orderBy('id', 'desc')->get();
+        $daily_sales = DailySale::where('restaurant_id', Auth::user()->restaurant_id)->where(function($query){
+            $query->where('payment_status', '!=', 'Paid')
+                ->OrWhere('status', '!=', 'Delivered');
+        })
+        ->orderBy('id', 'desc')
+        ->get();
         $inventories = Inventory::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
-        return view('backend.pages.sales.daily_sales', compact('daily_sales', 'inventories'));
+        $drivers = Driver::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
+        
+        return view('backend.pages.sales.daily_sales', compact('daily_sales', 'inventories', 'drivers'));
+    }
+
+    public function driver()
+    {
+        $dt = Carbon::now();
+        $daily_sales = DailySale::where('driver_id', Auth::user()->driver_id)->where('status', '!=', 'Cancelled')->where(function($query){
+            $query->where('status', '!=', 'Delivered');
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+        $inventories = Inventory::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
+        $drivers = Driver::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
+        return view('backend.pages.sales.driver', compact('daily_sales', 'inventories', 'drivers'));
     }
 
     public function all()
@@ -41,6 +63,11 @@ class DailySaleController extends Controller
 
         $request->request->add(['balance' => $request->amount, 'restaurant_id' => Auth::user()->restaurant_id]);
         
+        Notification::create([
+            'daily_sale_id' => $product->id,
+            'description' => 'Check Out',
+        ]);
+
         DailySale::create($request->all());
 
         return redirect()->back()->with('success','Successfully Added');
@@ -48,7 +75,7 @@ class DailySaleController extends Controller
 
     public function edit($id)
     {
-        $products = DailySale::where('id', $id)->with('customer')->orderBy('id')->firstOrFail();
+        $products = DailySale::where('id', $id)->with('user')->orderBy('id')->firstOrFail();
         return response()->json(compact('products'));
     }
 
@@ -64,12 +91,24 @@ class DailySaleController extends Controller
                 'balance' => $current_balance,
                 'payment_status' => 'Paid'
             ]);
+
+            Notification::create([
+                'daily_sale_id' => $id,
+                'description' => 'Paid',
+            ]);
+
             DailySale::find($id)->update($request->all());
         } else {
             $request->merge([
                 'balance' => $current_balance,
                 'payment_status' => 'Unpaid'
             ]);
+
+            Notification::create([
+                'daily_sale_id' => $id,
+                'description' => 'Unpaid',
+            ]);
+
             DailySale::find($id)->update($request->all());
         }
 
@@ -78,8 +117,33 @@ class DailySaleController extends Controller
 
     public function productionStatus(Request $request, $id)
     {
+        if(Auth::user()->designation != 'Driver') {
+            DailySale::where('id', $id)->update(['status' => $request->status, 'driver_id' => $request->driver_id]);
+        } else {
+            DailySale::where('id', $id)->update(['status' => $request->status, 'driver_id' => Auth::user()->driver_id]);
+        }
+
+        Notification::create([
+            'daily_sale_id' => $id,
+            'description' => $request->status,
+            'user_id' => Auth::user()->id,
+            'driver_id' => $request->driver_id,
+        ]);
+
+        return redirect()->back()->with('success','Successfully Updated');
+    }
+
+    public function cancelOrder(Request $request, $id)
+    {
         // var_dump($request->production_status);die();
-        DailySale::where('id', $id)->update(['production_status' => $request->production_status]);
+        DailySale::where('id', $id)->update(['description' => $request->description, 'status' => 'Cancelled']);
+
+        Notification::create([
+            'daily_sale_id' => $id,
+            'description' => 'Cancelled',
+            'user_id' => Auth::user()->id,
+        ]);
+
         return redirect()->back()->with('success','Successfully Updated');
     }
 

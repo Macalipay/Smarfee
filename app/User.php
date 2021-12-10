@@ -17,9 +17,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'restaurant_id', 'lastname', 'email', 'designation', 'address', 'password', 'contact_number', 'picture', 'city_id'
+        'firstname', 'restaurant_id', 'lastname', 'email', 'designation', 'address', 'password', 'contact_number', 'picture', 'city_id', 'driver_id'
     ];
 
+    public function notification_user()
+    {
+        return $this->hasOne(Notification::class);
+    }
     
     public function restaurant()
     {

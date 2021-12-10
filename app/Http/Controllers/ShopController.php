@@ -35,16 +35,20 @@ class ShopController extends Controller
         return view('frontend.pages.shop.pages.shop', compact('products', 'restaurant', 'terms', 'rules'));
     }
 
-
     public function history()
     {
-        $sale = DailySale::where('user_id', Auth::user()->id)->where('payment_status', 'Unpaid')->first();
+        $sale = DailySale::where('user_id', Auth::user()->id)->where('payment_status', 'Unpaid')->where(function($query){
+            $query->where('status', '!=','Delivered')
+                ->orWhere('status', '!=', 'Cancelled');
+        })
+        ->first();
+
         if($sale != null) {
             $orders = Order::with('inventory')->where('daily_sale_id', $sale->id)->get();
         } else {
             $orders = Order::with('inventory')->where('daily_sale_id', 1000)->get();
         }
-        $sales = DailySale::with('user')->where('user_id', Auth::user()->id)->where('payment_status', 'Paid')->get();
+        $sales = DailySale::with('user')->where('user_id', Auth::user()->id)->where('payment_status', 'Paid')->orWhere('status', 'Cancelled')->get();
         
         return view('frontend.pages.shop.pages.history', compact('orders', 'sale', 'sales'));
     }

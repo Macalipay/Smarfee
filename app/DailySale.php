@@ -15,6 +15,7 @@ class DailySale extends Model
         'payment_status',
         'status',
         'restaurant_id',
+        'driver_id',
     ];
 
     public function inventory()
@@ -37,8 +38,18 @@ class DailySale extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class, 'driver_id');
+    }
+
     public function order_status()
     {
         return $this->hasOne(Order::class);
+    }
+
+    public function notification()
+    {
+        return $this->hasMany(Notification::class);
     }
 }

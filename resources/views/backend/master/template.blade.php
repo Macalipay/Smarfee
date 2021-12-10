@@ -45,4 +45,42 @@
 	<script src="{{ asset('backend/docs/js/app.js')}}"></script>
 </body>
 @yield('scripts')
+<script>
+	$(document).ready(function(){
+			$.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/notification/show',
+                method: 'get',
+                data: {
+
+                },
+                success: function(data) {
+					notification = data.notifications;
+					$('.list-group').empty();
+					$('.message').empty();
+					$('.data_count').attr('data-count', data.count)
+					$('.message').append(data.count + ' New Messages')
+					for (let index = 0; index < notification.length; index++) {
+						if(data.notifications[index].status == 0) {
+							back_color = '#dbdbdb';
+						} else {
+							back_color = white;
+						}
+						$('.list-group').append('<a href="#" class="list-group-item">'+
+                            '<div class="row no-gutters align-items-center">'+
+                                '<div class="col-10 pl-2">'+
+                                    '<div class="text-dark">' + data.notifications[index].user.firstname + ' ' + data.notifications[index].user.lastname +'</div>'+
+                                    '<div class="text-muted small mt-1">'+ data.notifications[index].dailysale_notif.user.firstname + ' ' + data.notifications[index].dailysale_notif.user.lastname  + ' order is ' + data.notifications[index].description + ' .</div>'+
+                                    '<div class="text-muted small mt-1">' + data.notifications[index].created_at + '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</a>')
+					}
+				  
+                }
+            });
+		})
+</script>
 </html>

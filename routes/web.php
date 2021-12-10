@@ -74,13 +74,24 @@ Route::group(['prefix' => 'inventory'], function (){
 // DAILY SALES
 Route::group(['prefix' => 'daily_sales'], function (){
     Route::get          ('/',                               'DailySaleController@index'                          )->name('selection');
+    Route::get          ('/driver',                         'DailySaleController@driver'                         )->name('selection');
     Route::get          ('/all',                            'DailySaleController@all'                            )->name('reason');
     Route::post         ('/save',                           'DailySaleController@store'                          )->name('reason');
     Route::get          ('/edit/{id}',                      'DailySaleController@edit'                           )->name('reason');
     Route::post         ('/update/{id}',                    'DailySaleController@update'                         )->name('reason_update');
     Route::post         ('/productionStatus/{id}',          'DailySaleController@productionStatus'               )->name('reason_update');
+    Route::post         ('/cancel/{id}',                    'DailySaleController@cancelOrder'                    )->name('reason_update');
     Route::post         ('/paymentStatus/{id}',             'DailySaleController@paymentStatus'                  )->name('reason_update');
     Route::get          ('/destroy/{id}',                   'DailySaleController@destroy'                        )->name('reason_update');
+});
+
+// NOTFICATION
+Route::group(['prefix' => 'notification'], function (){
+    Route::get          ('/',                            'NotificationController@index'                          )->name('selection');
+    Route::post         ('/save',                        'NotificationController@store'                          )->name('reason');
+    Route::get          ('/show',                        'NotificationController@show'                           )->name('reason');
+    Route::post         ('/update/{id}',                 'NotificationController@update'                         )->name('reason_update');
+    Route::get          ('/destroy/{id}',                'NotificationController@destroy'                        )->name('reason_update');
 });
 
 // PAYMENT

@@ -35,7 +35,7 @@ class PaymentController extends Controller
         $current_balance = $daily_sale->balance - $request->amount;
 
         if($current_balance <= 0) {
-            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid', 'status' => 'Delivered', 'restaurant_id' => Auth::user()->restaurant_id]);
+            DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Paid', 'restaurant_id' => Auth::user()->restaurant_id]);
         } else {
             DailySale::where('id', $request->dailysales_id)->update(['balance' => $current_balance, 'payment_status' => 'Unpaid', 'restaurant_id' => Auth::user()->restaurant_id]);
         }

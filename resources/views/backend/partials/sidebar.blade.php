@@ -40,6 +40,18 @@
             <li class="sidebar-header">
                 Transaction
             </li>
+
+           @role('Driver')
+            <li class="sidebar-item">
+                <a href="#salesorder" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle mr-2 fas fa-fw fa-cart-plus" style="color: #153d77"></i> <span class="align-middle">Delivery</span>
+                </a>
+                <ul id="salesorder" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ url('daily_sales/driver')}}">Daily Sales</a></li>
+                </ul>
+            </li>
+           @endrole
+
            @role('Owner')
             <li class="sidebar-item">
                 <a href="#salesorder" data-toggle="collapse" class="sidebar-link collapsed">

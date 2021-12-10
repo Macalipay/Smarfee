@@ -17,15 +17,21 @@
     <div class="row">
         <div class="col-lg-12 col-md-12">
             @if ($sale != null)
+
+            <button type="button" class="btn btn-danger col-lg-2 col-md-2 cancel_order " data-toggle="modal" id="{{$sale->id}}" data-target="#cancelOrder" style="float:right">
+                Cancel Order
+            </button>
                 <h3> ACTIVE ORDER</h3>
                 <h5> Payment Status: {{$sale->payment_status}}</h5>
                 <h5> Description/Note: {{$sale->description}}</h5>
                 <h5> Total: {{$sale->amount}}</h5>
+                <h5> Status: <span style="color:blue">{{$sale->status}}</span> </h5>
             @else
                 <h3> NO ACTIVE ORDER</h3>
                 <h5> Payment Status: </h5>
                 <h5> Description/Note: </h5>
                 <h5> Total: </h5>
+                <h5> Status: </h5>
             @endif
             
             <table id="datatables" class="table table-striped" style="width:100%">
@@ -59,6 +65,9 @@
                 </tbody>
             </table>
     
+            <br>
+            <br>
+            <br>
             <h3> PREVIOUS ORDER </h3>
             <table id="datatables" class="table table-striped" style="width:100%">
               <thead>
@@ -88,6 +97,34 @@
           </table>
         </div>
     </div>
+     {{-- MODAL --}}
+     <div class="modal fade" id="cancelOrder" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cancel Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <form id="modal-form-cancel" action="{{url('daily_sales/cancel')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group row">
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Description</label>
+                            <textarea  class="form-control" name="description" id="description" cols="5" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default col-lg-2 col-md-2" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary submit-button-production col-lg-2 col-md-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="clearfix"></div>
   </div>
 
@@ -96,7 +133,7 @@
 
 @section('scripts')
     <script>
-         function addToCart(id) {3
+         function addToCart(id) {
            $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -113,8 +150,31 @@
             });
          }
 
+         function cancel(id){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/daily_sales/edit/' + id,
+                method: 'get',
+                data: {
+
+                },
+                success: function(data) {
+                    $('#modal-form-cancel').attr('action', '/daily_sales/cancel/' + data.products.id);
+                        $.each(data, function() {
+                            $.each(this, function(k, v) {
+                                $('#'+k).val(v);
+                            });
+                        });
+                }
+            });
+        }
+
          $(function() {
-          
+            $('.cancel_order').click(function(){
+                cancel(this.id);
+            })
         });
     </script>
 @endsection

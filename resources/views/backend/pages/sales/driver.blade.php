@@ -12,18 +12,15 @@ table.dataTable thead th {
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    {{Auth::user()->restaurant->store_name}} - Daily Sales
+                    {{Auth::user()->restaurant->store_name}} - Delivery
                 </h1>
-                <p style="color: white">Always record and update the Daily Sales</p>
+                <p style="color: white">Always record and update Delivery Record</p>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Daily Sales
-                                {{-- <button type="button" class="btn btn-primary add mr-1" data-toggle="modal" data-target="#defaultModalPrimary" style="float:right">Add Order</button>  --}}
-                                {{-- <button type="button" class="btn btn-primary add mr-1" data-toggle="modal" data-target="#customerModal" style="float:right">Add Client</button> --}}
-                            </h5>
+                          
                         </div>
                         @include('backend.partials.flash-message')
                         <div class="col-12">
@@ -40,7 +37,6 @@ table.dataTable thead th {
                                                 <th>Amount</th>
                                                 <th>Balance</th>
                                                 <th>Status</th>
-                                                <th>Payment</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -49,9 +45,7 @@ table.dataTable thead th {
                                                     <td>{{ ++$key}}</td>
                                                     <td class="table-action">
                                                         <a href="#" class="align-middle fa fa-fw fa-tasks productionStatus" title="Production Status" data-toggle="modal" data-target="#productionStatus" id={{$daily_sale->id}}></a>
-                                                        <a href="#" class="align-middle fa fa-fw fa-money-bill paymentModal" title="Payment" data-toggle="modal" data-target="#paymentModal" id={{$daily_sale->id}}></a>
                                                         <a href="#" class="align-middle fa fa-fw fa-shopping-cart" onclick="orderList({{$daily_sale->id}})" title="List of Order" data-toggle="modal" data-target="#orderModal" id={{$daily_sale->id}}></a>
-                                                        <a href="{{url('daily_sales/destroy/' . $daily_sale->id)}}" onclick="alert('Are you sure you want to Delete?')"><i class="align-middle fas fa-fw fa-trash"></i></a>
                                                     </td>
                                                     <td>{{ $daily_sale->user->firstname . ' ' . $daily_sale->user->lastname}}</td>
                                                     <td>{{ $daily_sale->description}}</td>
@@ -63,11 +57,6 @@ table.dataTable thead th {
                                                     <td>₱ {{ number_format($daily_sale->amount, 2) }}</td>
                                                     <td>₱ {{ number_format($daily_sale->balance, 2) }}</td>
                                                     <td>{{ $daily_sale->status}}</td>
-                                                    @if ($daily_sale->payment_status == 'Paid')
-                                                        <td class="badge badge-success">{{ $daily_sale->payment_status}}</td>
-                                                    @else
-                                                        <td class="badge badge-danger">{{ $daily_sale->payment_status}}</td>
-                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -96,22 +85,11 @@ table.dataTable thead th {
                             <label class="col-form-label col-sm-3 text-sm-right">Production Status</label>
                             <div class="col-sm-9 mb-2">
                                 <select class="form-control" name="status">
-                                    <option value="Check Out">Check Out</option>
-                                    <option value="Ready">Ready</option>
                                     <option value="Pick Up By Rider">Pick Up By Rider</option>
                                     <option value="Ongoing Delivery">Ongoing Delivery</option>
                                     <option value="Arrive">Arrive</option>
                                     <option value="Cancelled">Cancelled</option>
                                     <option value="Delivered">Delivered</option>
-                                </select>
-                            </div>
-
-                            <label class="col-form-label col-sm-3 text-sm-right">Assign Rider</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" name="driver_id">
-                                    @foreach ($drivers as $driver)
-                                        <option value="{{$driver->id}}">{{$driver->driver_name}}</option>
-                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -266,7 +244,7 @@ table.dataTable thead th {
                 processing: true,
                 serverSide: true,
                 ajax: {
-                url: "order/show/" + id,
+                url: "/order/show/" + id,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },

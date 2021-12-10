@@ -16,4 +16,14 @@ class Driver extends Model
         'status',
         'restaurant_id',
     ];
+
+    public function daily_sale()
+    {
+        return $this->hasOne(DailySale::class);
+    }
+   
+    public function Notification()
+    {
+        return $this->hasOne(Notification::class);
+    }
 }

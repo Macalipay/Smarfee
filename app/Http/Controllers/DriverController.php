@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Driver;
+use App\User;
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
@@ -41,6 +42,26 @@ class DriverController extends Controller
         $requestData['file'] = $imageName;
 
         Driver::create($requestData);
+
+        $latest_driver = Driver::orderBy('id', 'desc')->first();
+        $last_user = User::select('id')->orderBy('id', 'desc')->first();
+
+        ModelHasRole::create([
+            'role_id' => 3,
+            'model_type' => 'App\User',
+            'model_id' => $last_user->id + 1,
+        ]);
+
+        User::create([
+            'firstname' => $request->driver_name,
+            'lastname' => $request->driver_name,
+            'address' => $request->address,
+            'designation' => 'Driver',
+            'email' =>  $request->email,
+            'contact_number' =>  $request->contact_number,
+            'driver_id' =>  $latest_driver->id,
+            'password' => '$2y$10$wDP43aejM.uAomThEV8teeI1hcBTBcjNNCSMOXftUe.6eu7ZlaPU6'
+        ]);
 
         return redirect()->back()->with('success','Successfully Added');
     }
