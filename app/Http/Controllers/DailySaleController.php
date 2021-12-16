@@ -136,7 +136,7 @@ class DailySaleController extends Controller
     public function cancelOrder(Request $request, $id)
     {
         // var_dump($request->production_status);die();
-        DailySale::where('id', $id)->update(['description' => $request->description, 'status' => 'Cancelled']);
+        DailySale::where('id', $id)->update(['description' => $request->description, 'status' => 'Cancelled', 'payment_status' => 'Paid']);
 
         Notification::create([
             'daily_sale_id' => $id,
