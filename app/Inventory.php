@@ -32,4 +32,9 @@ class Inventory extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function promo()
+    {
+        return $this->hasOne(Promo::class);
+    }
 }

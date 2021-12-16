@@ -95,6 +95,18 @@ Route::group(['prefix' => 'notification'], function (){
     Route::get          ('/destroy/{id}',                'NotificationController@destroy'                        )->name('reason_update');
 });
 
+
+// PROMO
+Route::group(['prefix' => 'promo'], function (){
+    Route::get          ('/',                            'PromoController@index'                          )->name('selection');
+    Route::post         ('/save',                        'PromoController@store'                          )->name('reason');
+    Route::get          ('/edit/{id}',                   'PromoController@edit'                          )->name('reason');
+    Route::get          ('/show',                        'PromoController@show'                           )->name('reason');
+    Route::post         ('/update/{id}',                 'PromoController@update'                         )->name('reason_update');
+    Route::get          ('/destroy/{id}',                'PromoController@destroy'                        )->name('reason_update');
+});
+
+
 // PAYMENT
 Route::group(['prefix' => 'payment'], function (){
     Route::get          ('/',                            'PaymentController@index'                          )->name('client');

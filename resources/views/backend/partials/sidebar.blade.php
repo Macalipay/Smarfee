@@ -73,6 +73,12 @@
                     <li class="sidebar-item"><a class="sidebar-link" href="{{ url('inventory/view_add_stock')}}">Inventory Transaction</a></li>
                 </ul>
             </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ url('promo')}}">
+                    <i class="align-middle mr-2 fa fa-fw fa-percent" style="color: #153d77"></i> <span class="align-middle">Promo</span>
+                </a>
+            </li>
             
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{ url('driver')}}">
