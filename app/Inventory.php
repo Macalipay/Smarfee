@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     protected $fillable = [
+        'id',
         'name',
         'description',
         'price',
@@ -35,6 +36,6 @@ class Inventory extends Model
 
     public function promo()
     {
-        return $this->hasOne(Promo::class);
+        return $this->hasOne(Promo::class, 'id', 'inventory_id');
     }
 }

@@ -10,6 +10,7 @@ use App\DailySale;
 use App\Restaurant;
 use App\Order;
 use App\City;
+use App\Promo;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -32,7 +33,8 @@ class ShopController extends Controller
         $terms = Term::where('restaurant_id', $id)->get();
         $rules = Rule::where('restaurant_id', $id)->get();
         $products = Inventory::where('restaurant_id', $id)->where('status', '!=', 'Out of Stock')->get();
-        return view('frontend.pages.shop.pages.shop', compact('products', 'restaurant', 'terms', 'rules'));
+        $promos = Promo::get();
+        return view('frontend.pages.shop.pages.shop', compact('products', 'restaurant', 'terms', 'rules', 'promos'));
     }
 
     public function history()
@@ -80,7 +82,14 @@ class ShopController extends Controller
         ]);
 
         $inventory = Inventory::where('id', $request->inventory_id)->firstOrFail();
-        $total = $request->quantity * $inventory->price;
+
+        if (Promo::where('inventory_id', $request->inventory_id)->exists()) {
+            $promo_price = Promo::where('inventory_id', $request->inventory_id)->first();
+            $latest = ($inventory->price * $promo_price->discount) / 100;
+            $total = $request->quantity * $latest;
+        } else {
+            $total = $request->quantity * $inventory->price;
+        }
 
         if(DailySale::where('user_id', Auth::user()->id)->where('payment_status', 'Unpaid')->exists()) {
             $sale = DailySale::where('user_id', Auth::user()->id)->where('payment_status', 'Unpaid')->firstOrFail();

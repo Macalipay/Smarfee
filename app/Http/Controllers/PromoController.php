@@ -12,7 +12,7 @@ class PromoController extends Controller
     public function index()
     {
         $promos = Promo::orderBy('id')->get();
-        $products = Inventory::orderBy('id')->get();
+        $products = Inventory::where('restaurant_id', Auth::user()->restaurant_id)->orderBy('id')->get();
         return view('backend.pages.promo', compact('promos', 'products'));
     }
 

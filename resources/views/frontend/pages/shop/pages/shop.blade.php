@@ -42,12 +42,21 @@
                 <div class="thumbnail card product">
                   <div class="img-event"> <a class="group list-group-image img-fluid" href="#"><img src="{{('/images/product/' . $product->photo)}}" alt="" class="img-fluid" style="width: 300px; height: 300px" ></a> </div>
                   <div class="caption card-body">
+                    <label hidden>{{$promo = App\Promo::where('inventory_id', $product->id)->first()}}</label>
                     <h3 class="product-type">{{ $product->type }}</h3>
+                    @if (App\Promo::where('inventory_id', $product->id)->exists())
+                       <center> <h5 class="promo" style="background: red; color:white;width: 50%">PROMO - {{$promo->discount}}%</h5></center>
+                    @endif
                     <h4 class="product-name">{{ $product->name }}</h4>
                     <h4 class="product-name">{{ $product->description }}</h4>
                     <div class="row m-0 list-n">
                       <div class="col-12 p-0">
-                        <h5 class="product-price">₱ {{ $product->price }}</h5>
+                        @if (App\Promo::where('inventory_id', $product->id)->exists())
+                          <h5 class="product-price"><strike>₱ {{$product->price}}</strike></h5> - 
+                          <h5 class="product-price">₱ {{($product->price * $promo->discount) / 100 }}</h5>
+                        @else
+                          <h5 class="product-price">₱ {{ $product->price }}</h5>
+                        @endif
                       </div>
                       <div class="col-12 p-0">
                         <div class="product-price">
