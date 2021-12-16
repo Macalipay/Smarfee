@@ -5,7 +5,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav">
           <li class="nav-item"> <a class="nav-link" href="{{url('/')}}">Home</a></li>
-          <li class="nav-item"> <a class="nav-link" href="{{url('shop')}}">Shop</a></li>
+          {{-- <li class="nav-item"> <a class="nav-link" href="{{url('shop')}}">Shop</a></li> --}}
           <li class="nav-item"> <a class="nav-link" href="{{ url('shop/history')}}">History</a></li>
         </ul>
         <div class="rate-price nav-1">

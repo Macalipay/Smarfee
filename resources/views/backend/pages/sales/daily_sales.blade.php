@@ -63,8 +63,10 @@ table.dataTable thead th {
                                                     <td>₱ {{ number_format($daily_sale->amount, 2) }}</td>
                                                     <td>₱ {{ number_format($daily_sale->balance, 2) }}</td>
                                                     <td>{{ $daily_sale->status}}</td>
-                                                    @if ($daily_sale->payment_status == 'Paid')
+                                                    @if ($daily_sale->payment_status == 'Paid' && $daily_sale->status == 'Delivered')
                                                         <td class="badge badge-success">{{ $daily_sale->payment_status}}</td>
+                                                    @elseif($daily_sale->payment_status == 'Paid' && $daily_sale->status == "Cancelled")
+                                                        <td class="badge badge-warning">Cancelled</td>
                                                     @else
                                                         <td class="badge badge-danger">{{ $daily_sale->payment_status}}</td>
                                                     @endif
