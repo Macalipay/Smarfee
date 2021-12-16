@@ -24,7 +24,9 @@
                 <h3> ACTIVE ORDER</h3>
                 <h5> Payment Status: {{$sale->payment_status}}</h5>
                 <h5> Description/Note: {{$sale->description}}</h5>
-                <h5> Total: {{$sale->amount}}</h5>
+                <h5> Amount: {{$sale->amount}}</h5>
+                <h5> Delivery Charge: {{$sale->delivery_charge}}</h5>
+                <h5> Total: {{$sale->amount + $sale->delivery_charge}}</h5>
                 <h5> Status: <span style="color:blue">{{$sale->status}}</span> </h5>
             @else
                 <h3> NO ACTIVE ORDER</h3>

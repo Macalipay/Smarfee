@@ -79,6 +79,7 @@ Route::group(['prefix' => 'daily_sales'], function (){
     Route::post         ('/save',                           'DailySaleController@store'                          )->name('reason');
     Route::get          ('/edit/{id}',                      'DailySaleController@edit'                           )->name('reason');
     Route::post         ('/update/{id}',                    'DailySaleController@update'                         )->name('reason_update');
+    Route::post         ('/delivery/{id}',                  'DailySaleController@delivery'                         )->name('reason_update');
     Route::post         ('/productionStatus/{id}',          'DailySaleController@productionStatus'               )->name('reason_update');
     Route::post         ('/cancel/{id}',                    'DailySaleController@cancelOrder'                    )->name('reason_update');
     Route::post         ('/paymentStatus/{id}',             'DailySaleController@paymentStatus'                  )->name('reason_update');

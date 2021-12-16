@@ -37,6 +37,7 @@ table.dataTable thead th {
                                                 <th>Client Name</th>
                                                 <th>Description</th>
                                                 <th>Driver</th>
+                                                <th>Del.Charge</th>
                                                 <th>Amount</th>
                                                 <th>Balance</th>
                                                 <th>Status</th>
@@ -49,6 +50,7 @@ table.dataTable thead th {
                                                     <td>{{ ++$key}}</td>
                                                     <td class="table-action">
                                                         <a href="#" class="align-middle fa fa-fw fa-tasks productionStatus" title="Production Status" data-toggle="modal" data-target="#productionStatus" id={{$daily_sale->id}}></a>
+                                                        <a href="#" class="align-middle fa fa-fw fa-motorcycle deliveryModal" title="Payment" data-toggle="modal" data-target="#deliveryModal" id={{$daily_sale->id}}></a>
                                                         <a href="#" class="align-middle fa fa-fw fa-money-bill paymentModal" title="Payment" data-toggle="modal" data-target="#paymentModal" id={{$daily_sale->id}}></a>
                                                         <a href="#" class="align-middle fa fa-fw fa-shopping-cart" onclick="orderList({{$daily_sale->id}})" title="List of Order" data-toggle="modal" data-target="#orderModal" id={{$daily_sale->id}}></a>
                                                         <a href="{{url('daily_sales/destroy/' . $daily_sale->id)}}" onclick="alert('Are you sure you want to Delete?')"><i class="align-middle fas fa-fw fa-trash"></i></a>
@@ -60,6 +62,7 @@ table.dataTable thead th {
                                                     @else
                                                         <td>No Rider Assign</td>
                                                     @endif
+                                                    <td>{{ $daily_sale->delivery_charge}}</td>
                                                     <td>₱ {{ number_format($daily_sale->amount, 2) }}</td>
                                                     <td>₱ {{ number_format($daily_sale->balance, 2) }}</td>
                                                     <td>{{ $daily_sale->status}}</td>
@@ -207,6 +210,37 @@ table.dataTable thead th {
                 </div>
             </div>
         </div>
+
+
+        {{-- MODAL --}}
+        <div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delivery Charge</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body m-3">
+                        <form id="modal-form-delivery" action="{{url('delivery/save')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row">
+                            <label class="col-form-label col-sm-3 text-sm-right">Amount</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="dailysales_id" id="dailysales_id" hidden>
+                                <input type="text" class="form-control" name="delivery_charge" id="delivery_charge" placeholder="Enter Amount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary submit-button-payment">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 @endsection
 
@@ -228,6 +262,27 @@ table.dataTable thead th {
                     $('.customer_value').val(data.products.customer.name);
                     $('.modal-title').text('Update Order');
                     $('.submit-button').text('Update');
+                        $.each(data, function() {
+                            $.each(this, function(k, v) {
+                                $('#'+k).val(v);
+                            });
+                        });
+                }
+            });
+        }
+
+        function deliveryCharge(id){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/daily_sales/edit/' + id,
+                method: 'get',
+                data: {
+
+                },
+                success: function(data) {
+                    $('#modal-form-delivery').attr('action', '/daily_sales/delivery/' + data.products.id);
                         $.each(data, function() {
                             $.each(this, function(k, v) {
                                 $('#'+k).val(v);
@@ -300,6 +355,10 @@ table.dataTable thead th {
 
             $( "table" ).on( "click", ".paymentModal", function() {
                 paymentStatus(this.id);
+            });
+
+            $( "table" ).on( "click", ".deliveryModal", function() {
+                deliveryCharge(this.id);
             });
 
             $( "table" ).on( "click", ".edit", function() {

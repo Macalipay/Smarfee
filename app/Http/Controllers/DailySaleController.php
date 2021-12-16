@@ -115,6 +115,12 @@ class DailySaleController extends Controller
         return redirect()->back()->with('success','Successfully Updated');
     }
 
+    public function delivery(Request $request, $id)
+    {
+        DailySale::where('id', $id)->update(['delivery_charge' => $request->delivery_charge]);
+        return redirect()->back()->with('success','Successfully Updated');
+    }
+
     public function productionStatus(Request $request, $id)
     {
         if(Auth::user()->designation != 'Driver') {
